@@ -1,0 +1,18 @@
+<!--
+To compile .qrc to .rcc file for Qt resource system
+command: rcc -binary icons.qrc -o icons.rcc
+-->
+
+<RCC>
+  <qresource>
+    
+    <file>clearAll.png</file>
+    <file>clearHistory.png</file>
+    <file>clearInput.png</file>
+    <file>connect.png</file>
+    <file>disconnect.png</file>
+    <file>execute.png</file>
+    <file>executeAll.png</file>
+
+  </qresource>
+</RCC>
