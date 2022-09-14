@@ -2,7 +2,17 @@
 
 Unreal Engine 5 equivalent Maya Script Editor (Maybe)
 
-![picture](https://i.imgur.com/FTQFyS1.png)
+![picture](https://i.imgur.com/KscixlU.png)
+
+
+## Instructions
+
+```python
+from unrealScriptEditor import main
+global editor
+editor = main.show()
+```
+
 
 ## Roadmap:
 

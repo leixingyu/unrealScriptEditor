@@ -64,10 +64,14 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.ui_run_all_btn.setIcon(QtGui.QIcon(":/executeAll.png"))
         self.ui_run_sel_btn.setIcon(QtGui.QIcon(":/execute.png"))
         self.ui_clear_log_btn.setIcon(QtGui.QIcon(":/clearHistory.png"))
+        self.ui_clear_script_btn.setIcon(QtGui.QIcon(":/clearInput.png"))
+        self.ui_clear_both_btn.setIcon(QtGui.QIcon(":/clearAll.png"))
         #
         self.ui_run_all_btn.clicked.connect(self.execute)
         self.ui_run_sel_btn.clicked.connect(self.execute_sel)
         self.ui_clear_log_btn.clicked.connect(self.clear_log)
+        self.ui_clear_script_btn.clicked.connect(self.clear_script)
+        self.ui_clear_both_btn.clicked.connect(self.clear_all)
 
         self.ui_save_action.triggered.connect(self.save_script)
         self.ui_open_action.triggered.connect(self.open_script)
@@ -147,6 +151,8 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.ui_tab_highlighters.append(highlight)
         self.ui_tabs.append(script_edit)
 
+        self.ui_tab_widget.setCurrentIndex(index)
+
     # Execution
 
     def execute(self):
@@ -216,6 +222,13 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         """
         self.ui_log_edit.clear()
 
+    def clear_script(self):
+        self.ui_tab_widget.currentWidget().setPlainText('')
+
+    def clear_all(self):
+        self.clear_script()
+        self.clear_log()
+
     # Tab Operation
 
     def add_tab(self, index):
@@ -244,8 +257,10 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
             return
 
         with open(path, 'r') as f:
+            file_name = os.path.basename(path)
             output = f.read()
-            self.ui_script_edit.setPlainText(output)
+            index = self.ui_tab_widget.count() - 1
+            self.insert_tab(index, output, file_name)
 
     def save_script(self):
         """
@@ -260,7 +275,7 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         if not path:
             return
 
-        command = self.ui_script_edit.toPlainText()
+        command = self.ui_tab_widget.currentWidget().toPlainText()
         with open(path, 'w') as f:
             f.write(command)
 

@@ -101,7 +101,7 @@
          <item>
           <widget class="QPushButton" name="ui_clear_log_btn">
            <property name="toolTip">
-            <string>clear maya log</string>
+            <string>clear unreal log</string>
            </property>
            <property name="text">
             <string/>
