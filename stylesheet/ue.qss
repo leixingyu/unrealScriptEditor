@@ -76,6 +76,11 @@ QComboBox:hover {
 QLineEdit:focus {
   border-color: #0664c3; }
 
+QTextEdit, QPlainTextEdit {
+  font-size: 10pt;
+  font-family: 'Consolas';
+}
+
 QComboBox::drop-down {
   border: none;
   padding-right: 5px; }

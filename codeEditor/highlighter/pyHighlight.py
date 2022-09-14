@@ -10,11 +10,8 @@ def format(color, style=''):
     """
     Return a QTextCharFormat with the given attributes.
     """
-    _color = QtGui.QColor()
-    _color.setNamedColor(color)
-
     _format = QtGui.QTextCharFormat()
-    _format.setForeground(_color)
+    _format.setForeground(color)
     if 'bold' in style:
         _format.setFontWeight(QtGui.QFont.Bold)
     if 'italic' in style:
@@ -25,15 +22,15 @@ def format(color, style=''):
 
 # Syntax styles that can be shared by all languages
 STYLES = {
-    'keyword': format('blue'),
-    'operator': format('red'),
-    'brace': format('darkGray'),
-    'defclass': format('black', 'bold'),
-    'string': format('magenta'),
-    'string2': format('darkMagenta'),
-    'comment': format('darkGreen', 'italic'),
-    'self': format('black', 'italic'),
-    'numbers': format('brown'),
+    'keyword': format(QtGui.QColor('#cc7832'), 'bold'),
+    # 'operator': format('red'),
+    # 'brace': format('darkGray'),
+    'defclass': format(QtGui.QColor('#cc7832')),
+    'string': format(QtGui.QColor(255, 255, 0)),
+    'string2': format(QtGui.QColor('#829755'), 'italic'),
+    'comment': format(QtGui.QColor('#47802c')),
+    'self': format(QtGui.QColor('#94558d')),
+    'numbers': format(QtGui.QColor('#6897bb')),
 }
 
 
@@ -81,10 +78,10 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         # Keyword, operator, and brace rules
         rules += [(r'\b%s\b' % w, 0, STYLES['keyword'])
                   for w in PythonHighlighter.keywords]
-        rules += [(r'%s' % o, 0, STYLES['operator'])
-                  for o in PythonHighlighter.operators]
-        rules += [(r'%s' % b, 0, STYLES['brace'])
-                  for b in PythonHighlighter.braces]
+        # rules += [(r'%s' % o, 0, STYLES['operator'])
+        #           for o in PythonHighlighter.operators]
+        # rules += [(r'%s' % b, 0, STYLES['brace'])
+        #           for b in PythonHighlighter.braces]
 
         # All other rules
         rules += [
