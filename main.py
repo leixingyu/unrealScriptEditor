@@ -111,6 +111,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
             config = TabConfig(i, label, active, script_tab.toPlainText())
             configs.append(config)
 
+        # go back to the previous active tab
+        self.ui_tab_widget.setCurrentIndex(active_index)
+
         with open(CONFIG_PATH, 'w') as f:
             string = [config._asdict() for config in configs]
             f.write(str(string))
@@ -162,6 +165,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         command = self.ui_tab_widget.currentWidget().toPlainText()
         output = util.execute_python_command(command)
 
+        if not output:
+            return
+
         self.update_logger('# Script executed:')
         self.update_logger(command)
         self.update_logger('# Script execution ended')
@@ -173,6 +179,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         """
         command = self.ui_tab_widget.currentWidget().textCursor().selection().toPlainText()
         output = util.execute_python_command(command)
+
+        if not output:
+            return
 
         self.update_logger('# Command executed:')
         self.update_logger(command)
