@@ -302,8 +302,7 @@ def show():
     global APP
     global WINDOW
 
-    if not QtWidgets.QApplication.instance():
-        APP = QtWidgets.QApplication(sys.argv)
+    APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
     QtCore.QResource.registerResource(
         os.path.join(MODULE_PATH, "icons", "icons.rcc"))
@@ -315,15 +314,13 @@ def show():
         qss = f.read()
         APP.setStyleSheet(qss)
 
+    # handles existing instance
     exists = WINDOW is not None
-
     if not exists:
         WINDOW = ScriptEditorWindow()
-        unreal.parent_external_window_to_slate(
-            WINDOW.winId().__init__(),
-            unreal.SlateParentWindowSearchMethod.ACTIVE_WINDOW
-        )
+        WINDOW.show()
+        unreal.parent_external_window_to_slate(int(WINDOW.winId()))
+    else:
+        WINDOW.show()
 
-    WINDOW.showNormal()
-    unreal.log_warning("Does {} have parent: {}".format(WINDOW.winId(), WINDOW.parent()))
     return WINDOW
