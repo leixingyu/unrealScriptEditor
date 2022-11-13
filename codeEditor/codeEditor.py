@@ -218,14 +218,21 @@ class CodeEditor(CodeTextEdit):
                 painter.setPen(LINENUMBER_COLOR)
                 width = self.line_number_area.width() - 10
                 height = self.fontMetrics().height()
-                painter.drawText(0, top, width, height, QtCore.Qt.AlignRight, number)
+                painter.drawText(
+                    0,
+                    int(top),
+                    int(width),
+                    int(height),
+                    QtCore.Qt.AlignRight,
+                    number
+                )
 
             block = block.next()
             top = bottom
             bottom = top + self.blockBoundingRect(block).height()
             block_number += 1
 
-    def update_line_number_area_width(self, newBlockCount):
+    def update_line_number_area_width(self, new_block_count):
         self.setViewportMargins(self.line_number_area_width(), 0, 0, 0)
 
     def update_line_number_area(self, rect, dy):

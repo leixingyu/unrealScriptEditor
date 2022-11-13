@@ -246,9 +246,18 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
             self.insert_tab(index, '', 'Python')
 
     def close_tab(self, index):
-        if index != self.ui_tab_widget.count() - 1:
-            self.ui_tab_widget.removeTab(index)
-            self.ui_tab_widget.setCurrentIndex(index-1)
+        msg_box = QtWidgets.QMessageBox(
+            QtWidgets.QMessageBox.Question,
+            '',
+            'Delete the Current Tab?',
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No
+        )
+
+        usr_choice = msg_box.exec()
+        if usr_choice == QtWidgets.QMessageBox.Yes:
+            if index != self.ui_tab_widget.count() - 1:
+                self.ui_tab_widget.removeTab(index)
+                self.ui_tab_widget.setCurrentIndex(index-1)
 
     # IO
 
