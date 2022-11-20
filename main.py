@@ -8,10 +8,9 @@ import unreal
 from Qt import QtWidgets, QtCore, QtGui
 from Qt import _loadUi
 
-from . import util
+from . import outputTextWidget
 from .codeEditor import codeEditor
 from .codeEditor.highlighter import pyHighlight
-from . import outputTextWidget
 
 APP = None
 WINDOW = None
@@ -24,12 +23,21 @@ CONFIG_PATH = os.path.join(MODULE_PATH, 'config.txt')
 
 class TabConfig(namedtuple('TabConfig', ['index', 'label', 'active', 'command'])):
     """
+    Dataclass to store python script information in the tabs
 
+    :param index: int. script tab index within the tab widget
+    :param label: str. script tab title label
+    :param active: bool. whether this tab is set to active (current)
+                   only one tab is allowed to be active
+    :param command: str. script in the tab
     """
     __slots__ = ()
 
 
 class ScriptEditorWindow(QtWidgets.QMainWindow):
+    """
+    Script Editor main window
+    """
 
     def __init__(self, parent=None):
         """
@@ -61,14 +69,20 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.ui_open_action.triggered.connect(self.open_script)
 
         self.ui_tab_widget.tabBarClicked.connect(self.add_tab)
-        self.ui_tab_widget.tabCloseRequested.connect(self.close_tab)
+        self.ui_tab_widget.tabCloseRequested.connect(self.remove_tab)
 
     # region Overrides
     def closeEvent(self, event):
+        """
+        Override: close the tool automatically saves out the script configs
+        """
         self.save_configs()
         super(ScriptEditorWindow, self).closeEvent(event)
 
     def register_traceback(self):
+        """
+        Link Unreal traceback
+        """
         def custom_traceback(exc_type, exc_value, exc_traceback=None):
             message = 'Error: {}: {}\n'.format(exc_type, exc_value)
             if exc_traceback:
@@ -82,6 +96,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
 
     # region Config
     def save_configs(self):
+        """
+        Save all current python tabs' config
+        """
         configs = list()
         active_index = self.ui_tab_widget.currentIndex()
 
@@ -102,6 +119,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
             f.write(str(string))
 
     def load_configs(self):
+        """
+        During startup, load python script config file and initialize tab gui
+        """
         if not os.path.exists(CONFIG_PATH):
             self.load_tabs()
             return
@@ -116,6 +136,11 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.load_tabs(tab_configs)
 
     def load_tabs(self, tab_configs=None):
+        """
+        Initialize python script tab gui from config object
+
+        :param tab_configs: TabConfig. dataclass object storing python tab info
+        """
         if not tab_configs:
             tab_configs = [TabConfig(0, 'Python', True, '')]
 
@@ -128,6 +153,13 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.ui_tab_widget.setCurrentIndex(active_index)
 
     def insert_tab(self, index, command, label):
+        """
+        Insert a python tab into the tab widget
+
+        :param index: int. tab index to insert
+        :param command: str. python script command to add to the inserted tab
+        :param label: str. title/label of the tab inserted
+        """
         script_edit = codeEditor.CodeEditor()
         script_edit.setPlainText(command)
         highlight = pyHighlight.PythonHighlighter(
@@ -146,7 +178,11 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         Send all command in script area for maya to execute
         """
         command = self.ui_tab_widget.currentWidget().toPlainText()
-        output = util.execute_python_command(command)
+        output = unreal.PythonScriptLibrary.execute_python_command_ex(
+            python_command=command,
+            execution_mode=unreal.PythonCommandExecutionMode.EXECUTE_FILE,
+            file_execution_scope=unreal.PythonFileExecutionScope.PUBLIC
+        )
 
         if not output:
             return
@@ -163,7 +199,11 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         Send selected command in script area for maya to execute
         """
         command = self.ui_tab_widget.currentWidget().textCursor().selection().toPlainText()
-        output = util.execute_python_command(command)
+        output = unreal.PythonScriptLibrary.execute_python_command_ex(
+            python_command=command,
+            execution_mode=unreal.PythonCommandExecutionMode.EXECUTE_FILE,
+            file_execution_scope=unreal.PythonFileExecutionScope.PUBLIC
+        )
 
         if not output:
             return
@@ -205,11 +245,18 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
 
     # region Tab Operation
     def add_tab(self, index):
-        # add tab clicked
+        """
+        Add a python tab when 'Add' tab button is clicked
+        """
         if index == self.ui_tab_widget.count() - 1:
             self.insert_tab(index, '', 'Python')
 
-    def close_tab(self, index):
+    def remove_tab(self, index):
+        """
+        Remove a python tab
+
+        :param index: int. removal tab index
+        """
         msg_box = QtWidgets.QMessageBox(
             QtWidgets.QMessageBox.Question,
             '',

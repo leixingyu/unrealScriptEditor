@@ -2,6 +2,10 @@ import unreal
 
 
 def create_script_editor_button():
+    """
+    Start up script to add script editor button to tool bar
+    """
+
     section_name = 'Plugins'
     se_command = (
         'from unrealScriptEditor import main;'
@@ -16,6 +20,7 @@ def create_script_editor_button():
 
     entry = unreal.ToolMenuEntry(type=unreal.MultiBlockType.TOOL_BAR_BUTTON)
     entry.set_label('Script Editor')
+    entry.set_tool_tip('Unreal Python Script Editor')
     entry.set_icon('EditorStyle', 'DebugConsole.Icon')
     entry.set_string_command(
         type=unreal.ToolMenuStringCommandType.PYTHON,

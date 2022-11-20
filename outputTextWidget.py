@@ -8,7 +8,7 @@ MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 MODULE_NAME = os.path.basename(MODULE_PATH)
 UI_PATH = os.path.join(MODULE_PATH, 'ui', 'output_text_widget.ui')
 
-
+# display text formatting
 ERROR_FORMAT = QtGui.QTextCharFormat()
 ERROR_FORMAT.setForeground(QtGui.QBrush(QtCore.Qt.red))
 
@@ -23,6 +23,9 @@ REGULAR_FORMAT.setForeground(QtGui.QBrush(QtGui.QColor(200, 200, 200)))
 
 
 class OutputTextWidget(QtWidgets.QWidget):
+    """
+    Text Widget to display output information from Unreal command execution
+    """
 
     def __init__(self, parent=None):
         """
@@ -32,9 +35,18 @@ class OutputTextWidget(QtWidgets.QWidget):
         _loadUi(UI_PATH, self)
 
     def clear(self):
+        """
+        Clear the all text
+        """
         self.ui_log_edit.clear()
 
     def update_logger(self, message, mtype=None):
+        """
+        Append plain message to display text widget
+
+        :param message: str. message
+        :param mtype: str. message type, this determines the message format/style
+        """
         if mtype == 'info':
             self.ui_log_edit.setCurrentCharFormat(INFO_FORMAT)
         elif mtype == 'warning':
@@ -51,6 +63,11 @@ class OutputTextWidget(QtWidgets.QWidget):
         scroll.setValue(scroll.maximum())
 
     def update_logger_html(self, html):
+        """
+        Append html message to display text widget
+
+        :param html: str. message as html
+        """
         self.ui_log_edit.insertHtml(html)
         self.ui_log_edit.insertHtml('<br>')
 
