@@ -9,7 +9,6 @@ def create_script_editor_button():
     section_name = 'Plugins'
     se_command = (
         'from unrealScriptEditor import main;'
-        'from importlib import reload;'
         'global editor;'
         'editor = main.show()'
     )
@@ -29,3 +28,7 @@ def create_script_editor_button():
     )
     level_menu_bar.add_menu_entry(section_name, entry)
     menus.refresh_all_widgets()
+
+
+if __name__ == "__main__":
+    create_script_editor_button()
