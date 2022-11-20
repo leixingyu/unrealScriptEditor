@@ -6,16 +6,13 @@ from importlib import reload
 from collections import namedtuple
 
 import unreal
-
 from Qt import QtWidgets, QtCore, QtGui
 from Qt import _loadUi
 
-from .codeEditor import codeEditor
-reload(codeEditor)
-from .codeEditor.highlighter import pyHighlight
-reload(pyHighlight)
-
 from . import util
+reload(util)
+from .codeEditor import codeEditor
+from .codeEditor.highlighter import pyHighlight
 
 APP = None
 WINDOW = None
@@ -49,15 +46,17 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         Initialization
         """
         super(ScriptEditorWindow, self).__init__(parent)
-        self.setWindowFlags(self.windowFlags() | QtCore.Qt.Window)
         _loadUi(UI_PATH, self)
+        splitter = QtWidgets.QSplitter()
+        splitter.setOrientation(QtCore.Qt.Vertical)
+        self.centralwidget.layout().addWidget(splitter)
+        splitter.addWidget(self.ui_log_edit)
+        splitter.addWidget(self.ui_tab_widget)
 
         self.ui_tabs = list()
         self.ui_tab_highlighters = list()
 
         self.register_traceback()
-
-        #
         self.load_configs()
 
         #

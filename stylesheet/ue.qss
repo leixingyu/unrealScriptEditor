@@ -30,9 +30,14 @@ QFrame {
   border-style: transparent; }
 
 QGroupBox {
-  padding-top: 10px; }
+  padding: 5px; }
   QGroupBox::title {
     padding: 0px; }
+
+QSplitter {
+  background: transparent; }
+  QSplitter:handle:vertical {
+    background: transparent; }
 
 QMenuBar {
   background-color: #151515;
