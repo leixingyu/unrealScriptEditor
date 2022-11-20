@@ -2,7 +2,6 @@ import ast
 import os
 import sys
 import traceback
-from importlib import reload
 from collections import namedtuple
 
 import unreal
@@ -10,9 +9,9 @@ from Qt import QtWidgets, QtCore, QtGui
 from Qt import _loadUi
 
 from . import util
-reload(util)
 from .codeEditor import codeEditor
 from .codeEditor.highlighter import pyHighlight
+from . import outputTextWidget
 
 APP = None
 WINDOW = None
@@ -20,23 +19,14 @@ WINDOW = None
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
 MODULE_NAME = os.path.basename(MODULE_PATH)
 UI_PATH = os.path.join(MODULE_PATH, 'ui', 'script_editor.ui')
-
 CONFIG_PATH = os.path.join(MODULE_PATH, 'config.txt')
 
-ERROR_FORMAT = QtGui.QTextCharFormat()
-ERROR_FORMAT.setForeground(QtGui.QBrush(QtCore.Qt.red))
 
-WARNING_FORMAT = QtGui.QTextCharFormat()
-WARNING_FORMAT.setForeground(QtGui.QBrush(QtCore.Qt.yellow))
+class TabConfig(namedtuple('TabConfig', ['index', 'label', 'active', 'command'])):
+    """
 
-INFO_FORMAT = QtGui.QTextCharFormat()
-INFO_FORMAT.setForeground(QtGui.QBrush(QtGui.QColor('#6897bb')))
-
-REGULAR_FORMAT = QtGui.QTextCharFormat()
-REGULAR_FORMAT.setForeground(QtGui.QBrush(QtGui.QColor(200, 200, 200)))
-
-
-TabConfig = namedtuple('TabConfig', ['index', 'label', 'active', 'command'])
+    """
+    __slots__ = ()
 
 
 class ScriptEditorWindow(QtWidgets.QMainWindow):
@@ -50,6 +40,7 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         splitter = QtWidgets.QSplitter()
         splitter.setOrientation(QtCore.Qt.Vertical)
         self.centralwidget.layout().addWidget(splitter)
+        self.ui_log_edit = outputTextWidget.OutputTextWidget()
         splitter.addWidget(self.ui_log_edit)
         splitter.addWidget(self.ui_tab_widget)
 
@@ -59,12 +50,6 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.register_traceback()
         self.load_configs()
 
-        #
-        self.ui_run_all_btn.setIcon(QtGui.QIcon(":/executeAll.png"))
-        self.ui_run_sel_btn.setIcon(QtGui.QIcon(":/execute.png"))
-        self.ui_clear_log_btn.setIcon(QtGui.QIcon(":/clearHistory.png"))
-        self.ui_clear_script_btn.setIcon(QtGui.QIcon(":/clearInput.png"))
-        self.ui_clear_both_btn.setIcon(QtGui.QIcon(":/clearAll.png"))
         #
         self.ui_run_all_btn.clicked.connect(self.execute)
         self.ui_run_sel_btn.clicked.connect(self.execute_sel)
@@ -78,8 +63,7 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.ui_tab_widget.tabBarClicked.connect(self.add_tab)
         self.ui_tab_widget.tabCloseRequested.connect(self.close_tab)
 
-    # Initialize
-
+    # region Overrides
     def closeEvent(self, event):
         self.save_configs()
         super(ScriptEditorWindow, self).closeEvent(event)
@@ -91,12 +75,12 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
                 format_exception = traceback.format_tb(exc_traceback)
                 for line in format_exception:
                     message += line
-            self.update_logger(message, 'error')
+            self.ui_log_edit.update_logger(message, 'error')
 
         sys.excepthook = custom_traceback
+    # endregion
 
-    # Config
-
+    # region Config
     def save_configs(self):
         configs = list()
         active_index = self.ui_tab_widget.currentIndex()
@@ -154,9 +138,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         self.ui_tabs.append(script_edit)
 
         self.ui_tab_widget.setCurrentIndex(index)
+    # endregion
 
-    # Execution
-
+    # region Execution
     def execute(self):
         """
         Send all command in script area for maya to execute
@@ -167,9 +151,11 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         if not output:
             return
 
-        self.update_logger('# Script executed:')
-        self.update_logger(command)
-        self.update_logger('# Script execution ended')
+        self.ui_log_edit.update_logger(
+            "# Command executed: \n"
+            "{}\n"
+            "# Command execution ended".format(command)
+        )
         self.send_formatted_output(output)
 
     def execute_sel(self):
@@ -182,9 +168,11 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         if not output:
             return
 
-        self.update_logger('# Command executed:')
-        self.update_logger(command)
-        self.update_logger('# Command execution ended')
+        self.ui_log_edit.update_logger(
+            "# Command executed: \n"
+            "{}\n"
+            "# Command execution ended".format(command)
+        )
         self.send_formatted_output(output)
 
     def send_formatted_output(self, output):
@@ -197,32 +185,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         result, log_entries = output
         for entry in log_entries:
             if entry.type != unreal.PythonLogOutputType.INFO:
-                self.update_logger(entry.output, 'error')
+                self.ui_log_edit.update_logger(entry.output, 'error')
             else:
-                self.update_logger(entry.output, 'info')
-
-    def update_logger(self, message, mtype=None):
-        if mtype == 'info':
-            self.ui_log_edit.setCurrentCharFormat(INFO_FORMAT)
-        elif mtype == 'warning':
-            self.ui_log_edit.setCurrentCharFormat(WARNING_FORMAT)
-        elif mtype == 'error':
-            self.ui_log_edit.setCurrentCharFormat(ERROR_FORMAT)
-        else:
-            self.ui_log_edit.setCurrentCharFormat(REGULAR_FORMAT)
-
-        self.ui_log_edit.insertPlainText(message)
-        self.ui_log_edit.insertPlainText('\n')
-
-        scroll = self.ui_log_edit.verticalScrollBar()
-        scroll.setValue(scroll.maximum())
-
-    def update_logger_html(self, html):
-        self.ui_log_edit.insertHtml(html)
-        self.ui_log_edit.insertHtml('<br>')
-
-        scroll = self.ui_log_edit.verticalScrollBar()
-        scroll.setValue(scroll.maximum())
+                self.ui_log_edit.update_logger(entry.output, 'info')
 
     def clear_log(self):
         """
@@ -236,9 +201,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
     def clear_all(self):
         self.clear_script()
         self.clear_log()
+    # endregion
 
-    # Tab Operation
-
+    # region Tab Operation
     def add_tab(self, index):
         # add tab clicked
         if index == self.ui_tab_widget.count() - 1:
@@ -257,9 +222,9 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
             if index != self.ui_tab_widget.count() - 1:
                 self.ui_tab_widget.removeTab(index)
                 self.ui_tab_widget.setCurrentIndex(index-1)
+    # endregion
 
-    # IO
-
+    # region File IO
     def open_script(self):
         """
         Open python file to script edit area
@@ -295,6 +260,7 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         command = self.ui_tab_widget.currentWidget().toPlainText()
         with open(path, 'w') as f:
             f.write(command)
+    # endregion
 
 
 def show():
