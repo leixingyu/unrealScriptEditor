@@ -318,9 +318,7 @@ def show():
     exists = WINDOW is not None
     if not exists:
         WINDOW = ScriptEditorWindow()
-        WINDOW.show()
-        unreal.parent_external_window_to_slate(int(WINDOW.winId()))
-    else:
-        WINDOW.show()
+    WINDOW.show()
+    unreal.parent_external_window_to_slate(int(WINDOW.winId()))
 
     return WINDOW
