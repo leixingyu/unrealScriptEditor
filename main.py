@@ -316,9 +316,6 @@ def show():
 
     APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
-    QtCore.QResource.registerResource(
-        os.path.join(MODULE_PATH, "icons", "icons.rcc"))
-
     # stylesheet
     QtCore.QResource.registerResource(
         os.path.join(MODULE_PATH, "stylesheet", "icons.rcc"))

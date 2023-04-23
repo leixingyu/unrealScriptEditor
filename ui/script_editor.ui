@@ -62,7 +62,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":/executeAll.png"/>
+            <iconset>
+             <normaloff>../icons/executeAll.png</normaloff>../icons/executeAll.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -84,7 +85,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":/execute.png"/>
+            <iconset>
+             <normaloff>../icons/execute.png</normaloff>../icons/execute.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -113,7 +115,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":/clearHistory.png"/>
+            <iconset>
+             <normaloff>../icons/clearHistory.png</normaloff>../icons/clearHistory.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -135,7 +138,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":/clearInput.png"/>
+            <iconset>
+             <normaloff>../icons/clearInput.png</normaloff>../icons/clearInput.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -157,7 +161,8 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset theme=":/clearAll.png"/>
+            <iconset>
+             <normaloff>../icons/clearAll.png</normaloff>../icons/clearAll.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -211,7 +216,7 @@
      <x>0</x>
      <y>0</y>
      <width>567</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
