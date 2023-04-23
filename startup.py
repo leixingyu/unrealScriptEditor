@@ -1,4 +1,13 @@
+import os
+import sys
+
 import unreal
+
+
+MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
+UPPER_PATH = os.path.join(MODULE_PATH, '..')
+
+sys.path.append(UPPER_PATH)
 
 
 def create_script_editor_button():
