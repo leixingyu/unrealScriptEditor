@@ -63,7 +63,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../icons/executeAll.png</normaloff>../icons/executeAll.png</iconset>
+             <normaloff>ICONS:/executeAll.png</normaloff>ICONS:/executeAll.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -86,7 +86,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../icons/execute.png</normaloff>../icons/execute.png</iconset>
+             <normaloff>ICONS:/execute.png</normaloff>ICONS:/execute.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -116,7 +116,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../icons/clearHistory.png</normaloff>../icons/clearHistory.png</iconset>
+             <normaloff>ICONS:/clearHistory.png</normaloff>ICONS:/clearHistory.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -139,7 +139,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../icons/clearInput.png</normaloff>../icons/clearInput.png</iconset>
+             <normaloff>ICONS:/clearInput.png</normaloff>ICONS:/clearInput.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -162,7 +162,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../icons/clearAll.png</normaloff>../icons/clearAll.png</iconset>
+             <normaloff>ICONS:/clearAll.png</normaloff>ICONS:/clearAll.png</iconset>
            </property>
            <property name="iconSize">
             <size>
