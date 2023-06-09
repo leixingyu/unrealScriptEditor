@@ -20,6 +20,9 @@ MODULE_NAME = os.path.basename(MODULE_PATH)
 UI_PATH = os.path.join(MODULE_PATH, 'ui', 'script_editor.ui')
 CONFIG_PATH = os.path.join(MODULE_PATH, 'config.txt')
 
+ICONS_PATH = os.path.join(MODULE_PATH, 'icons')
+QtCore.QDir.addSearchPath("ICONS", ICONS_PATH)
+
 
 class TabConfig(namedtuple('TabConfig', ['index', 'label', 'active', 'command'])):
     """
