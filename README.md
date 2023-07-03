@@ -25,7 +25,6 @@ Hence the creation of this tool!
 The tool needs the following library to be installed:
 
 - Qt for Python: [PySide2](https://pypi.org/project/PySide2/) or [PyQt5](https://pypi.org/project/PyQt5/)
-
 - Python shim for all Qt bindings: [Qt.py](https://pypi.org/project/Qt.py/)
 
 
@@ -33,21 +32,16 @@ The tool needs the following library to be installed:
 
 The tool is meant to be launched from a menu bar button like such:
 
-<div align="center">
 <img src="https://i.imgur.com/IcQGGu5.png" alt="menu">
-</div>
 
 You can set up this very easily by adding `startup.py` as a startup script,
 under _Project Settings - Plugins - Python_
 
-- download the project zip file where you can find the `startup.py`, add
-that location to the startup scripts: 
-e.g. _"C:\Downloads\unrealScriptEditor\startup.py"_
+- download & extract the project zip file
+- find the `startup.py` location, and add it to the startup scripts: e.g. `C:\Downloads\unrealScriptEditor\startup.py`
 
 
-<div align="center">
 <img src="https://i.imgur.com/wJrkp5b.png" alt="menu">
-</div>
 
 ### Simple Launch Script
 
@@ -63,6 +57,11 @@ global editor
 editor = main.show()
 ```
 
+### Install as module
+Install the module from the repo
+```bash
+python -m pip install git+https://github.com/hannesdelbeke/unreal-script-editor
+```
 
 ## Features
 
