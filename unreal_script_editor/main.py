@@ -1,10 +1,19 @@
+"""
+code for the main script editor window
+"""
+
 import ast
 import os
 import sys
 import traceback
 from collections import namedtuple
 
-import unreal
+try:
+    import unreal
+    RUNNING_IN_UNREAL = True
+except ImportError:
+    RUNNING_IN_UNREAL = False
+
 from Qt import QtWidgets, QtCore, QtGui
 from Qt import _loadUi
 
@@ -181,42 +190,52 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         Send all command in script area for maya to execute
         """
         command = self.ui_tab_widget.currentWidget().toPlainText()
-        output = unreal.PythonScriptLibrary.execute_python_command_ex(
-            python_command=command,
-            execution_mode=unreal.PythonCommandExecutionMode.EXECUTE_FILE,
-            file_execution_scope=unreal.PythonFileExecutionScope.PUBLIC
-        )
+        if RUNNING_IN_UNREAL:
+            output = unreal.PythonScriptLibrary.execute_python_command_ex(
+                python_command=command,
+                execution_mode=unreal.PythonCommandExecutionMode.EXECUTE_FILE,
+                file_execution_scope=unreal.PythonFileExecutionScope.PUBLIC
+            )
 
-        if not output:
-            return
+            if not output:
+                return
 
-        self.ui_log_edit.update_logger(
-            "# Command executed: \n"
-            "{}\n"
-            "# Command execution ended".format(command)
-        )
-        self.send_formatted_output(output)
+            self.ui_log_edit.update_logger(
+                "# Command executed: \n"
+                "{}\n"
+                "# Command execution ended".format(command)
+            )
+            self.send_formatted_output(output)
+        else:
+            # todo this wont get any output, fix it
+            output = None
+            exec(command)
 
     def execute_sel(self):
         """
         Send selected command in script area for maya to execute
         """
         command = self.ui_tab_widget.currentWidget().textCursor().selection().toPlainText()
-        output = unreal.PythonScriptLibrary.execute_python_command_ex(
-            python_command=command,
-            execution_mode=unreal.PythonCommandExecutionMode.EXECUTE_FILE,
-            file_execution_scope=unreal.PythonFileExecutionScope.PUBLIC
-        )
+        if RUNNING_IN_UNREAL:
+            output = unreal.PythonScriptLibrary.execute_python_command_ex(
+                python_command=command,
+                execution_mode=unreal.PythonCommandExecutionMode.EXECUTE_FILE,
+                file_execution_scope=unreal.PythonFileExecutionScope.PUBLIC
+            )
 
-        if not output:
-            return
+            if not output:
+                return
 
-        self.ui_log_edit.update_logger(
-            "# Command executed: \n"
-            "{}\n"
-            "# Command execution ended".format(command)
-        )
-        self.send_formatted_output(output)
+            self.ui_log_edit.update_logger(
+                "# Command executed: \n"
+                "{}\n"
+                "# Command execution ended".format(command)
+            )
+            self.send_formatted_output(output)
+        else:
+            # todo this wont get any output, fix it
+            output = None
+            exec(command)
 
     def send_formatted_output(self, output):
         """
@@ -331,6 +350,8 @@ def show():
     if not exists:
         WINDOW = ScriptEditorWindow()
     WINDOW.show()
-    unreal.parent_external_window_to_slate(int(WINDOW.winId()))
+
+    if RUNNING_IN_UNREAL:
+        unreal.parent_external_window_to_slate(int(WINDOW.winId()))
 
     return WINDOW
