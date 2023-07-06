@@ -338,12 +338,8 @@ def show():
 
     APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
-    # stylesheet
-    QtCore.QResource.registerResource(
-        os.path.join(MODULE_PATH, "stylesheet", "icons.rcc"))
-    with open(os.path.join(MODULE_PATH, "stylesheet", "ue.qss"), 'r') as f:
-        qss = f.read()
-        APP.setStyleSheet(qss)
+    import unreal_stylesheet
+    unreal_stylesheet.setup()
 
     # handles existing instance
     exists = WINDOW is not None
