@@ -1,3 +1,8 @@
+"""
+this startup code is used to add a script editor button to the unreal tool bar.
+ignore this file when using this script editor widget outside Unreal
+"""
+
 import os
 import sys
 
