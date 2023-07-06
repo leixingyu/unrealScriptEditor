@@ -342,9 +342,7 @@ def show():
     unreal_stylesheet.setup()
 
     # handles existing instance
-    exists = WINDOW is not None
-    if not exists:
-        WINDOW = ScriptEditorWindow()
+    WINDOW = WINDOW or ScriptEditorWindow()
     WINDOW.show()
 
     if RUNNING_IN_UNREAL:
