@@ -4,7 +4,7 @@ requires = ["setuptools", "setuptools-scm"]
 
 
 [tool.setuptools]
-packages = ["unreal-script-editor"]
+packages = ["unreal_script_editor"]
 
 
 [project]

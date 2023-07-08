@@ -1,3 +1,7 @@
+"""
+code for the main output text widget
+"""
+
 import os
 
 from Qt import QtWidgets, QtCore, QtGui
