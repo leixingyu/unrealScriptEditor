@@ -1,7 +1,8 @@
 
 # Unreal Python Editor [![PyPI](https://img.shields.io/pypi/v/unreal-script-editor?color=blue)](https://pypi.org/project/unreal-script-editor/)
 
-an Unreal equivalent of the "Maya Script Editor"
+A Qt widget that's the Unreal equivalent of the "Maya Script Editor".  
+This repo hosts the Python module, for the Unreal plugin, see [this repo](https://github.com/hannesdelbeke/unreal-plugin-python-script-editor).
 
 
 ## About The Project
