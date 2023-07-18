@@ -1,18 +1,13 @@
-<div align="center">
-<h1 align="center">Unreal Python Editor</h1>
 
-  <p align="center">
-    <b>Unreal Engine Python Script Editor</b>
-    is an Unreal equivalent of the "Maya Script Editor"
-  </p>
-</div>
+# Unreal Python Editor [![PyPI](https://img.shields.io/pypi/v/unreal-script-editor?color=blue)](https://pypi.org/project/unreal-script-editor/) ![](https://img.shields.io/github/stars/leixingyu/unrealScriptEditor?label=GitHub%E2%AD%90)
+
+A Qt widget that's the Unreal equivalent of the "Maya Script Editor".  
+This repo hosts the Python module, for the Unreal plugin, see [this repo](https://github.com/hannesdelbeke/unreal-plugin-python-script-editor) ![](https://img.shields.io/github/stars/hannesdelbeke/unreal-plugin-python-script-editor?label=%E2%AD%90)
 
 
 ## About The Project
 
-<div align="center">
 <img src="https://i.imgur.com/KscixlU.png" alt="ui" height="580px"/>
-</div>
 
 With the rapid advancement of Unreal Engine and the Python support in Unreal
 Engine, more and more people are jumping into Unreal Python scripting. 
@@ -58,6 +53,11 @@ editor = main.show()
 ```
 
 ### Install as module
+install with pip
+```bash
+pip install unreal-script-editor
+```
+
 Install the module from the repo
 ```bash
 python -m pip install git+https://github.com/hannesdelbeke/unreal-script-editor
