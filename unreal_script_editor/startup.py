@@ -22,7 +22,7 @@ def create_script_editor_button():
 
     section_name = 'Plugins'
     se_command = (
-        'from unrealScriptEditor import main;'
+        'from unreal_script_editor import main;'
         'global editor;'
         'editor = main.show()'
     )

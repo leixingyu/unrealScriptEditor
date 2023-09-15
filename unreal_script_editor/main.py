@@ -3,6 +3,7 @@ code for the main script editor window
 """
 
 import ast
+import logging
 import os
 import sys
 import traceback
@@ -20,6 +21,9 @@ from Qt import _loadUi
 from . import outputTextWidget
 from .codeEditor import codeEditor
 from .codeEditor.highlighter import pyHighlight
+
+
+LOGGER = logging.getLogger(__name__)
 
 APP = None
 WINDOW = None
@@ -338,8 +342,12 @@ def show():
 
     APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
-    import unreal_stylesheet
-    unreal_stylesheet.setup()
+    try:
+        import unreal_stylesheet
+        unreal_stylesheet.setup()
+    except ImportError:
+        LOGGER.warning("unreal_stylesheet module not found, "
+                       "please run `pip install unreal-stylesheet`")
 
     # handles existing instance
     WINDOW = WINDOW or ScriptEditorWindow()
