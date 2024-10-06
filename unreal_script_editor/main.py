@@ -17,9 +17,6 @@ except ImportError:
 
 from PySide6 import QtWidgets, QtCore, QtGui
 
-# add this to the path D:\Unreal Projects\blueprint\Content\Python\Lib\site-packages
-sys.path.append(r"D:\Unreal Projects\blueprint\Content\Python\Lib\site-packages")
-
 from unreal_script_editor import outputTextWidget
 from unreal_script_editor.codeEditor import codeEditor
 from unreal_script_editor.codeEditor.highlighter import pyHighlight
@@ -347,12 +344,12 @@ def show():
 
     APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
-    # try:
-    #     import unreal_stylesheet
-    #     unreal_stylesheet.setup()
-    # except ImportError:
-    #     LOGGER.warning("unreal_stylesheet module not found, "
-    #                    "please run `pip install unreal-stylesheet`")
+    try:
+        import unreal_stylesheet
+        unreal_stylesheet.setup()
+    except ImportError:
+        LOGGER.warning("unreal_stylesheet module not found, "
+                       "please run `pip install unreal-stylesheet`")
 
     # handles existing instance
     WINDOW = WINDOW or ScriptEditorWindow()
@@ -367,4 +364,4 @@ def show():
 if __name__ == "__main__":
     APP = QtWidgets.QApplication.instance()
     w = show()
-    APP.exec_()
+    APP.exec()

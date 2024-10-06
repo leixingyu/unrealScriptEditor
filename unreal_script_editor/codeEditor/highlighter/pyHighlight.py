@@ -3,7 +3,7 @@ https://wiki.python.org/moin/PyQt/Python%20syntax%20highlighting
 """
 
 
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6 import QtGui
 from PySide6.QtCore import QRegularExpression
 
 
@@ -120,36 +120,6 @@ class PythonHighlighter(QtGui.QSyntaxHighlighter):
         self.tripleQuoutesWithinStrings = []
         # Do other syntax formatting
         for expression, nth, format in self.rules:
-
-
-            # index = expression.indexIn(text, 0)
-            # if index >= 0:
-            #     # if there is a string we check
-            #     # if there are some triple quotes within the string
-            #     # they will be ignored if they are matched again
-            #     if expression.pattern() in [r'"[^"\\]*(\\.[^"\\]*)*"', r"'[^'\\]*(\\.[^'\\]*)*'"]:
-            #         innerIndex = self.tri_single[0].indexIn(text, index + 1)
-            #         if innerIndex == -1:
-            #             innerIndex = self.tri_double[0].indexIn(text, index + 1)
-            #
-            #         if innerIndex != -1:
-            #             tripleQuoteIndexes = range(innerIndex, innerIndex + 3)
-            #             self.tripleQuoutesWithinStrings.extend(tripleQuoteIndexes)
-            #
-            # while index >= 0:
-            #     # skipping triple quotes within strings
-            #     if index in self.tripleQuoutesWithinStrings:
-            #         index += 1
-            #         expression.indexIn(text, index)
-            #         continue
-            #
-            #     # We actually want the index of the nth match
-            #     index = expression.pos(nth)
-            #     length = len(expression.cap(nth))
-            #     self.setFormat(index, length, format)
-            #     index = expression.indexIn(text, index + length)
-
-
             match = expression.match(text, 0)
             while match.hasMatch():
                 index = match.capturedStart(nth)

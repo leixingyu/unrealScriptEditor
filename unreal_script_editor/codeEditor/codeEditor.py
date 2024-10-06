@@ -176,7 +176,6 @@ class CodeEditor(CodeTextEdit):
         self.setFont(self.font)
 
         self.tab_size = 4
-        # self.setTabStopWidth(self.tab_size * self.fontMetrics().width(' '))
         self.setTabStopDistance(self.tab_size * self.fontMetrics().horizontalAdvance(' '))
 
         self.blockCountChanged.connect(self.update_line_number_area_width)
