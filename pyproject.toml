@@ -22,9 +22,9 @@ classifiers = [
     "Programming Language :: Python :: 3.7",
 ]
 #dynamic = ["dependencies"]
-dependencies = ['importlib-metadata; python_version<"3.7"', "Qt.py", "unreal-stylesheet"]
+dependencies = ['importlib-metadata; python_version<"3.7"', "unreal-stylesheet", "PySide6"]
 #dynamic = ["version"]
-version = "0.0.2"
+version = "0.0.3"
 
 #[project.optional-dependencies]
 #yaml = ["pyyaml"]
