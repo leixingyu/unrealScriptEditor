@@ -19,8 +19,8 @@ Hence the creation of this tool!
 
 The tool needs the following library to be installed:
 
-- Qt for Python: [PySide2](https://pypi.org/project/PySide2/) or [PyQt5](https://pypi.org/project/PyQt5/)
-- Python shim for all Qt bindings: [Qt.py](https://pypi.org/project/Qt.py/)
+- v0.0.2 uses [Qt.py](https://pypi.org/project/Qt.py/), and [PySide2](https://pypi.org/project/PySide2/) or [PyQt5](https://pypi.org/project/PyQt5/) 
+- v0.0.3+ uses PySide6
 
 
 ### Add as Menu Button
