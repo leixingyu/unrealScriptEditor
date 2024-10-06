@@ -3,7 +3,7 @@ https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html#the-linenumbera
 https://doc.qt.io/qtforpython/examples/example_widgets__codeeditor.html
 """
 
-from Qt import QtCore, QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class LineNumberArea(QtWidgets.QWidget):
@@ -176,7 +176,8 @@ class CodeEditor(CodeTextEdit):
         self.setFont(self.font)
 
         self.tab_size = 4
-        self.setTabStopWidth(self.tab_size * self.fontMetrics().width(' '))
+        # self.setTabStopWidth(self.tab_size * self.fontMetrics().width(' '))
+        self.setTabStopDistance(self.tab_size * self.fontMetrics().horizontalAdvance(' '))
 
         self.blockCountChanged.connect(self.update_line_number_area_width)
         self.updateRequest.connect(self.update_line_number_area)
@@ -190,7 +191,7 @@ class CodeEditor(CodeTextEdit):
             max_num *= 0.1
             digits += 1
 
-        space = 20 + self.fontMetrics().width('9') * digits
+        space = 20 + self.fontMetrics().horizontalAdvance('9') * digits
         return space
 
     def resizeEvent(self, e):

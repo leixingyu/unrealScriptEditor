@@ -31,8 +31,8 @@ python qt bindings
 
    or alternatively, change the code below to whatever qt binding you have on your machine.
    ```python
-   from Qt import QtWidgets, QtCore, QtGui
-   from Qt import _loadUi
+   from PySide6 import QtWidgets, QtCore, QtGui
+   from PySide6 import _loadUi
    ```
 
 ### Launch

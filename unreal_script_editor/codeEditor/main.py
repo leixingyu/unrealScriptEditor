@@ -1,6 +1,6 @@
 import sys
 
-from Qt import QtWidgets
+from PySide6 import QtWidgets
 
 import codeEditor
 from highlighter.pyHighlight import PythonHighlighter

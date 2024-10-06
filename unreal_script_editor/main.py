@@ -15,12 +15,16 @@ try:
 except ImportError:
     RUNNING_IN_UNREAL = False
 
-from Qt import QtWidgets, QtCore, QtGui
-from Qt import _loadUi
+from PySide6 import QtWidgets, QtCore, QtGui
 
-from . import outputTextWidget
-from .codeEditor import codeEditor
-from .codeEditor.highlighter import pyHighlight
+# add this to the path D:\Unreal Projects\blueprint\Content\Python\Lib\site-packages
+sys.path.append(r"D:\Unreal Projects\blueprint\Content\Python\Lib\site-packages")
+
+from unreal_script_editor import outputTextWidget
+from unreal_script_editor.codeEditor import codeEditor
+from unreal_script_editor.codeEditor.highlighter import pyHighlight
+
+from unreal_script_editor.ui.script_editor import Ui_MainWindow
 
 
 LOGGER = logging.getLogger(__name__)
@@ -50,7 +54,7 @@ class TabConfig(namedtuple('TabConfig', ['index', 'label', 'active', 'command'])
     __slots__ = ()
 
 
-class ScriptEditorWindow(QtWidgets.QMainWindow):
+class ScriptEditorWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     """
     Script Editor main window
     """
@@ -60,10 +64,11 @@ class ScriptEditorWindow(QtWidgets.QMainWindow):
         Initialization
         """
         super(ScriptEditorWindow, self).__init__(parent)
-        _loadUi(UI_PATH, self)
+        self.setupUi(self)  # Set up the UI
+
         splitter = QtWidgets.QSplitter()
         splitter.setOrientation(QtCore.Qt.Vertical)
-        self.centralwidget.layout().addWidget(splitter)
+        self.centralWidget().layout().addWidget(splitter)
         self.ui_log_edit = outputTextWidget.OutputTextWidget()
         splitter.addWidget(self.ui_log_edit)
         splitter.addWidget(self.ui_tab_widget)
@@ -342,12 +347,12 @@ def show():
 
     APP = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
 
-    try:
-        import unreal_stylesheet
-        unreal_stylesheet.setup()
-    except ImportError:
-        LOGGER.warning("unreal_stylesheet module not found, "
-                       "please run `pip install unreal-stylesheet`")
+    # try:
+    #     import unreal_stylesheet
+    #     unreal_stylesheet.setup()
+    # except ImportError:
+    #     LOGGER.warning("unreal_stylesheet module not found, "
+    #                    "please run `pip install unreal-stylesheet`")
 
     # handles existing instance
     WINDOW = WINDOW or ScriptEditorWindow()
@@ -357,3 +362,9 @@ def show():
         unreal.parent_external_window_to_slate(int(WINDOW.winId()))
 
     return WINDOW
+
+
+if __name__ == "__main__":
+    APP = QtWidgets.QApplication.instance()
+    w = show()
+    APP.exec_()

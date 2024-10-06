@@ -4,8 +4,8 @@ code for the main output text widget
 
 import os
 
-from Qt import QtWidgets, QtCore, QtGui
-from Qt import _loadUi
+from PySide6 import QtWidgets, QtCore, QtGui
+from unreal_script_editor.ui.output_text_widget import Ui_Form
 
 
 MODULE_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -26,7 +26,7 @@ REGULAR_FORMAT = QtGui.QTextCharFormat()
 REGULAR_FORMAT.setForeground(QtGui.QBrush(QtGui.QColor(200, 200, 200)))
 
 
-class OutputTextWidget(QtWidgets.QWidget):
+class OutputTextWidget(QtWidgets.QWidget, Ui_Form):
     """
     Text Widget to display output information from Unreal command execution
     """
@@ -36,7 +36,7 @@ class OutputTextWidget(QtWidgets.QWidget):
         Initialization
         """
         super(OutputTextWidget, self).__init__(parent)
-        _loadUi(UI_PATH, self)
+        self.setupUi(self)  # Set up the UI
 
     def clear(self):
         """
